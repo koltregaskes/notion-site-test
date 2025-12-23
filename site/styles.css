@@ -11,8 +11,8 @@
   --text-primary: #e5e7eb;
   --text-secondary: #9ca3af;
   --text-tertiary: #6b7280;
-  --accent: #60a5fa;
-  --accent-hover: #3b82f6;
+  --accent: #ef4444;
+  --accent-hover: #dc2626;
   --border: #1f2937;
   --code-bg: #1e293b;
 }
@@ -24,8 +24,8 @@
   --text-primary: #111827;
   --text-secondary: #6b7280;
   --text-tertiary: #9ca3af;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
+  --accent: #ef4444;
+  --accent-hover: #dc2626;
   --border: #e5e7eb;
   --code-bg: #f3f4f6;
 }
