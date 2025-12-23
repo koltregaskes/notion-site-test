@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin (Test)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="wrap">
+    <h1>Admin (placeholder)</h1>
+    <p class="muted">
+      For this test, “admin” is just a status page. Real admin tools come next (CRUD, auth, drafts, uploads).
+    </p>
+
+    <div class="bar">
+      <a class="btn" href="./index.html">Back</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Data status</h2>
+      <p id="status" class="muted">Loading…</p>
+    </section>
+
+    <section class="card">
+      <h2>How you “edit” right now</h2>
+      <ol class="muted">
+        <li>Edit items in Notion</li>
+        <li>Wait for the next Actions run, or re-run the workflow manually</li>
+        <li>Your GitHub Pages site updates</li>
+      </ol>
+    </section>
+  </main>
+
+  <script>
+    fetch("./data/notion.json", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("status").textContent =
+          `Last build: ${d.updatedAt} | Items: ${d.count}`;
+      })
+      .catch(() => {
+        document.getElementById("status").textContent =
+          "No data yet. Run the workflow once.";
+      });
+  </script>
+</body>
+</html>
