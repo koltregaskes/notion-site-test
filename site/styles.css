@@ -49,7 +49,7 @@ body {
   font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Droid Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.4;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: 500;
 }
@@ -63,7 +63,7 @@ body {
   padding: 1rem 0;
   position: sticky;
   top: 0;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-tertiary);
   z-index: 100;
   transition: background-color 0.3s ease;
 }
@@ -178,6 +178,7 @@ body {
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
   line-height: 1.1;
+  font-style: italic;
 }
 
 .intro-text {
@@ -241,6 +242,7 @@ body {
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 2rem;
+  font-style: italic;
 }
 
 .see-all {
@@ -275,6 +277,7 @@ body {
   font-weight: 800;
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
+  font-style: italic;
 }
 
 /* Posts List */
@@ -344,6 +347,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  font-style: italic;
 }
 
 .hash {
@@ -534,7 +538,16 @@ body {
 }
 
 .toc li {
+  margin-bottom: 0.25rem;
+}
+
+.toc li.section-item {
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.toc li.subsection-item {
+  margin-bottom: 0.15rem;
 }
 
 .toc a {
@@ -543,7 +556,8 @@ body {
   font-size: 0.875rem;
   display: block;
   transition: color 0.2s ease;
-  line-height: 1.4;
+  line-height: 1.1;
+  padding: 0.4rem 0;
 }
 
 .toc a:hover,
@@ -582,6 +596,7 @@ body {
   line-height: 1.2;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
+  font-style: italic;
 }
 
 .post-meta {
@@ -634,6 +649,7 @@ body {
   margin-bottom: 1.5rem;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  font-style: italic;
 }
 
 .post-content h2:first-child {
@@ -647,6 +663,7 @@ body {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   line-height: 1.4;
+  font-style: italic;
 }
 
 .post-content h4 {
@@ -656,6 +673,7 @@ body {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   line-height: 1.4;
+  font-style: italic;
 }
 
 .post-content p {
