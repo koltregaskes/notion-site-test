@@ -5,16 +5,16 @@
 
 /* CSS Variables for theming */
 :root[data-theme="dark"] {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-tertiary: #1a2332;
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-  --text-tertiary: #6b7280;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #242424;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #737373;
   --accent: #ef4444;
   --accent-hover: #dc2626;
-  --border: #1f2937;
-  --code-bg: #1e293b;
+  --border: #2a2a2a;
+  --code-bg: #242424;
 }
 
 :root[data-theme="light"] {
@@ -729,6 +729,34 @@ body {
   border: none;
   border-top: 1px solid var(--border);
   margin: 3rem 0;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.9375rem;
+}
+
+.post-content th,
+.post-content td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+
+.post-content th {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.post-content td {
+  color: var(--text-secondary);
+}
+
+.post-content tr:hover {
+  background-color: var(--bg-tertiary);
 }
 
 .post-content figure {
