@@ -23,13 +23,14 @@ function $(sel) {
   return document.querySelector(sel);
 }
 
-function escapeHtml(s) {
-  return (s || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function escapeHtml(s = "") {
+  // Use simple regex replacements for broader browser support (avoids String.replaceAll)
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function normaliseKind(kind) {
@@ -138,6 +139,12 @@ async function loadData() {
   const data = await res.json();
 
   state.items = Array.isArray(data.items) ? data.items : [];
+
+  const metaEl = $("#meta");
+  if (metaEl) {
+    const total = state.items.length;
+    metaEl.innerHTML = `Loaded <code>${escapeHtml(jsonUrl)}</code> (${total} item${total === 1 ? "" : "s"}).`;
+  }
 
   // Sort newest edited first (nice default)
   state.items.sort((a, b) => {
