@@ -227,8 +227,8 @@ function getHeaderFooter(basePath = "./", activePage = "") {
   const header = `<header class="site-header">
     <div class="header-content">
       <a href="${basePath}" class="site-logo">
-        <span class="logo-icon">-1</span>
-        <span class="logo-text">Off by One</span>
+        <span class="logo-icon">K</span>
+        <span class="logo-text">Kol's Korner</span>
       </a>
       <nav class="site-nav">
         <a href="${basePath}posts/"${activePage === 'posts' ? ' class="active"' : ''}>Posts</a>
@@ -254,7 +254,7 @@ function getHeaderFooter(basePath = "./", activePage = "") {
   const footer = `<footer class="site-footer">
     <div class="footer-content">
       <p>&copy; 2025 All rights reserved.</p>
-      <p class="footer-credit">Made in NYC by Can Duruk</p>
+      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
     </div>
     <div class="footer-social">
       <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
@@ -322,8 +322,8 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
   <header class="site-header">
     <div class="header-content">
       <a href="/notion-site-test/" class="site-logo">
-        <span class="logo-icon">-1</span>
-        <span class="logo-text">Off by One</span>
+        <span class="logo-icon">K</span>
+        <span class="logo-text">Kol's Korner</span>
       </a>
       <nav class="site-nav">
         <a href="/notion-site-test/posts/">Posts</a>
@@ -358,7 +358,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
         <header class="post-header">
           <h1 class="post-title">${escapeHtml(title)}</h1>
           <div class="post-meta">
-            <span class="post-author">Can Duruk</span>
+            <span class="post-author">Kol Tregaskes</span>
             <span class="meta-sep">•</span>
             <time class="post-date">${date ? new Date(date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : ""}</time>
             <span class="meta-sep">•</span>
@@ -376,7 +376,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
   <footer class="site-footer">
     <div class="footer-content">
       <p>&copy; 2025 All rights reserved.</p>
-      <p class="footer-credit">Made in NYC by Can Duruk</p>
+      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
     </div>
     <div class="footer-social">
       <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
@@ -396,7 +396,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
       </a>
-      <a href="https://justoffbyone.com" aria-label="Website" target="_blank" rel="noopener">
+      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -454,15 +454,15 @@ async function writeHomePage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Off by One</title>
+  <title>Kol's Korner</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="header-content">
       <a href="./" class="site-logo">
-        <span class="logo-icon">-1</span>
-        <span class="logo-text">Off by One</span>
+        <span class="logo-icon">K</span>
+        <span class="logo-text">Kol's Korner</span>
       </a>
       <nav class="site-nav">
         <a href="./posts/">Posts</a>
@@ -487,10 +487,10 @@ async function writeHomePage(items) {
 
   <main class="home-main">
     <div class="home-intro">
-      <img src="https://via.placeholder.com/120x120?text=CD" alt="Can Duruk" class="intro-avatar" />
-      <h1 class="intro-title">Off by One</h1>
-      <p class="intro-text">Hi. My name is Can Duruk. I lead the product engineering team at <a href="https://modal.com" target="_blank">Modal</a>. I'm the former CTO of <a href="https://felt.com" target="_blank">Felt</a> and an early engineer at <a href="https://uber.com" target="_blank">Uber</a>.</p>
-      <p class="intro-text">Here I write about <a href="./tags/#engineering-management">engineering management</a> (5), <a href="./tags/#tech-industry">tech industry</a> (9), and <a href="./tags/#other">other</a> (3) topics.</p>
+      <img src="https://via.placeholder.com/120x120?text=KT" alt="Kol Tregaskes" class="intro-avatar" />
+      <h1 class="intro-title">Kol's Korner</h1>
+      <p class="intro-text">Hi. My name is Kol Tregaskes. I'm a software developer and tech enthusiast based in the UK.</p>
+      <p class="intro-text">Here I write about tech, software development, and other topics that interest me.</p>
       <p class="intro-start">Start here:</p>
       <ul class="intro-list">
         <li><a href="#">Measuring Engineering Productivity</a></li>
@@ -527,7 +527,7 @@ async function writeHomePage(items) {
   <footer class="site-footer">
     <div class="footer-content">
       <p>&copy; 2025 All rights reserved.</p>
-      <p class="footer-credit">Made in NYC by Can Duruk</p>
+      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
     </div>
     <div class="footer-social">
       <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
@@ -547,7 +547,7 @@ async function writeHomePage(items) {
           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
       </a>
-      <a href="https://justoffbyone.com" aria-label="Website" target="_blank" rel="noopener">
+      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -588,15 +588,15 @@ async function writePostsPage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Posts - Off by One</title>
+  <title>Posts - Kol's Korner</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="header-content">
       <a href="../" class="site-logo">
-        <span class="logo-icon">-1</span>
-        <span class="logo-text">Off by One</span>
+        <span class="logo-icon">K</span>
+        <span class="logo-text">Kol's Korner</span>
       </a>
       <nav class="site-nav">
         <a href="./" class="active">Posts</a>
@@ -645,7 +645,7 @@ async function writePostsPage(items) {
   <footer class="site-footer">
     <div class="footer-content">
       <p>&copy; 2025 All rights reserved.</p>
-      <p class="footer-credit">Made in NYC by Can Duruk</p>
+      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
     </div>
     <div class="footer-social">
       <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
@@ -665,7 +665,7 @@ async function writePostsPage(items) {
           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
       </a>
-      <a href="https://justoffbyone.com" aria-label="Website" target="_blank" rel="noopener">
+      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -711,7 +711,7 @@ async function writeTagsPage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tags - Off by One</title>
+  <title>Tags - Kol's Korner</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -768,7 +768,7 @@ async function writeAboutPage() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About - Off by One</title>
+  <title>About - Kol's Korner</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -778,8 +778,8 @@ async function writeAboutPage() {
     <article class="about-content">
       <h1 class="page-title">About</h1>
       <div class="about-body">
-        <p>Hi. My name is Can Duruk. I lead the product engineering team at <a href="https://modal.com" target="_blank">Modal</a>. I'm the former CTO of <a href="https://felt.com" target="_blank">Felt</a> and an early engineer at <a href="https://uber.com" target="_blank">Uber</a>.</p>
-        <p>This blog is about engineering management, the tech industry, and other topics that interest me.</p>
+        <p>Hi. My name is Kol Tregaskes. I'm a software developer and tech enthusiast based in the UK.</p>
+        <p>This blog is about tech, software development, and other topics that interest me.</p>
         <p>You can find me on <a href="https://twitter.com/koltregaskes" target="_blank">Twitter</a>, <a href="https://instagram.com/koltregaskes" target="_blank">Instagram</a>, and <a href="https://youtube.com/@koltregaskes" target="_blank">YouTube</a>.</p>
       </div>
     </article>
@@ -803,7 +803,7 @@ async function writeSubscribePage() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Subscribe - Off by One</title>
+  <title>Subscribe - Kol's Korner</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -842,7 +842,7 @@ async function writeGalleryPage(items, kind) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${kindName} - Off by One</title>
+  <title>${kindName} - Kol's Korner</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
