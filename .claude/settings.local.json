@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dir /s \"e:\\\\My Drive\\\\Coding\\\\My Github\\\\notion-site-test\" /b)",
       "Bash(cat:*)",
-      "Bash(node scripts/fetch-notion.mjs:*)"
+      "Bash(node scripts/fetch-notion.mjs:*)",
+      "Bash(node:*)"
     ]
   }
 }

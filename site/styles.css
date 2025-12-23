@@ -5,29 +5,29 @@
 
 /* CSS Variables for theming */
 :root[data-theme="dark"] {
-  --bg-primary: #18181b;
-  --bg-secondary: #27272a;
-  --bg-tertiary: #3f3f46;
-  --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
-  --accent: #ef4444;
-  --accent-hover: #dc2626;
-  --border: #3f3f46;
-  --code-bg: #27272a;
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1a2332;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --accent: #60a5fa;
+  --accent-hover: #3b82f6;
+  --border: #1f2937;
+  --code-bg: #1e293b;
 }
 
 :root[data-theme="light"] {
   --bg-primary: #ffffff;
-  --bg-secondary: #f4f4f5;
-  --bg-tertiary: #e4e4e7;
-  --text-primary: #09090b;
-  --text-secondary: #52525b;
-  --text-tertiary: #71717a;
-  --accent: #ef4444;
-  --accent-hover: #dc2626;
-  --border: #e4e4e7;
-  --code-bg: #f4f4f5;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --border: #e5e7eb;
+  --code-bg: #f3f4f6;
 }
 
 /* Base Reset */
@@ -66,7 +66,7 @@ body {
 }
 
 .header-content {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 0 1.5rem;
   display: flex;
@@ -111,7 +111,7 @@ body {
 .site-nav a {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   transition: color 0.2s ease;
   white-space: nowrap;
 }
@@ -152,7 +152,7 @@ body {
    ============================================ */
 
 .home-main {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
@@ -170,10 +170,11 @@ body {
 }
 
 .intro-title {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .intro-text {
@@ -261,7 +262,7 @@ body {
    ============================================ */
 
 .content-main {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
@@ -297,11 +298,12 @@ body {
 
 .post-item-title {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
   transition: color 0.2s ease;
   letter-spacing: -0.01em;
+  line-height: 1.4;
 }
 
 .post-link:hover .post-item-title {
@@ -353,7 +355,7 @@ body {
 
 /* About Page */
 .about-content {
-  max-width: 680px;
+  max-width: 720px;
 }
 
 .about-body {
@@ -559,7 +561,7 @@ body {
 }
 
 .post-main {
-  max-width: 680px;
+  max-width: 720px;
   min-width: 0;
 }
 
@@ -572,7 +574,7 @@ body {
 }
 
 .post-title {
-  font-size: 2.5rem;
+  font-size: 2.625rem;
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1rem;
