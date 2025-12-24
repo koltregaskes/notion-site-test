@@ -51,6 +51,13 @@ const getRichText = (page, name) =>
   (getProp(page, name)?.rich_text || []).map(t => t.plain_text).join("");
 const getMultiSelect = (page, name) =>
   (getProp(page, name)?.multi_select || []).map(t => t.name);
+const getFiles = (page, name) => {
+  const files = getProp(page, name)?.files || [];
+  return files.map(f => ({
+    name: f.name,
+    url: f.file?.url || f.external?.url || ""
+  }));
+};
 
 async function queryDatabaseAll() {
   const out = [];
@@ -125,9 +132,9 @@ function blockToHtml(block) {
     return html ? `<p>${html}</p>` : "";
   }
 
-  if (t === "heading_1") return `<h2 id="${slugify(rtToHtml(block.heading_1?.rich_text || []))}">${rtToHtml(block.heading_1?.rich_text || [])}</h2>`;
-  if (t === "heading_2") return `<h3 id="${slugify(rtToHtml(block.heading_2?.rich_text || []))}">${rtToHtml(block.heading_2?.rich_text || [])}</h3>`;
-  if (t === "heading_3") return `<h4 id="${slugify(rtToHtml(block.heading_3?.rich_text || []))}">${rtToHtml(block.heading_3?.rich_text || [])}</h4>`;
+  if (t === "heading_1") return `<h2 id="${slugify(rtToHtml(block.heading_1?.rich_text || []))}"><span class="hash">#</span> ${rtToHtml(block.heading_1?.rich_text || [])}</h2>`;
+  if (t === "heading_2") return `<h3 id="${slugify(rtToHtml(block.heading_2?.rich_text || []))}"><span class="hash">##</span> ${rtToHtml(block.heading_2?.rich_text || [])}</h3>`;
+  if (t === "heading_3") return `<h4 id="${slugify(rtToHtml(block.heading_3?.rich_text || []))}"><span class="hash">###</span> ${rtToHtml(block.heading_3?.rich_text || [])}</h4>`;
 
   if (t === "quote") {
     const html = rtToHtml(block.quote?.rich_text || []);
@@ -177,12 +184,10 @@ function blockToHtml(block) {
   return "";
 }
 
-function blocksToHtml(blocks) {
+async function blocksToHtml(blocks) {
   let html = "";
   let inBullets = false;
   let inNumbers = false;
-  let inTable = false;
-  let tableRows = [];
 
   for (let i = 0; i < blocks.length; i++) {
     const b = blocks[i];
@@ -191,14 +196,8 @@ function blocksToHtml(blocks) {
       if (inBullets) { html += `</ul>`; inBullets = false; }
       if (inNumbers) { html += `</ol>`; inNumbers = false; }
 
-      // Collect table row children
-      inTable = true;
-      tableRows = [];
-
-      // Get table rows from children
-      if (b.has_children && b.table_row_children) {
-        tableRows = b.table_row_children;
-      }
+      // Fetch table row children
+      const tableRows = b.has_children ? await fetchBlocksAll(b.id) : [];
 
       // Start table
       const hasHeader = b.table?.has_column_header || false;
@@ -206,6 +205,8 @@ function blocksToHtml(blocks) {
 
       // Add rows
       tableRows.forEach((row, idx) => {
+        if (row.type !== "table_row") return;
+
         if (idx === 0 && hasHeader) {
           html += `<thead><tr>`;
           const cells = row.table_row?.cells || [];
@@ -227,7 +228,6 @@ function blocksToHtml(blocks) {
       });
 
       html += `</tbody></table>`;
-      inTable = false;
       continue;
     }
 
@@ -436,11 +436,11 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
             <span class="meta-sep">•</span>
             <span class="reading-time">${readingTime} min read</span>
           </div>
-          ${tagsHtml}
         </header>
         <div class="post-content">
           ${contentHtml}
         </div>
+        ${tagsHtml}
       </article>
     </main>
   </div>
@@ -906,7 +906,11 @@ async function writeSubscribePage() {
 }
 
 async function writeGalleryPage(items, kind) {
-  const kindItems = items.filter(i => i.kind === kind);
+  const kindItems = items
+    .filter(i => i.kind === kind)
+    .sort((a, b) => new Date(b.updatedTime) - new Date(a.updatedTime))
+    .slice(0, 8); // Show latest 8 items (4x2 grid)
+
   const kindName = kind.charAt(0).toUpperCase() + kind.slice(1) + "s";
 
   await fs.mkdir(`site/${kind}s`, { recursive: true });
@@ -928,33 +932,76 @@ async function writeGalleryPage(items, kind) {
     <h1 class="page-title">${kindName}</h1>
 
     <div class="gallery-grid">
-      ${kindItems.map(item => `
+      ${kindItems.map(item => {
+        const imageUrl = item.thumbnailUrl || item.driveUrl;
+        const fullUrl = item.driveUrl || item.thumbnailUrl;
+
+        return `
         <article class="gallery-item">
-          ${item.driveUrl ? `
-            <a href="${escapeHtml(item.driveUrl)}" target="_blank" rel="noopener" class="gallery-link">
+          <div class="gallery-thumbnail" onclick="openModal('${escapeHtml(fullUrl)}', '${escapeHtml(item.title)}', '${kind}')">
+            ${imageUrl ? `
+              <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" />
+            ` : `
               <div class="gallery-placeholder">
                 <span class="gallery-icon">${kind === 'image' ? '🖼️' : '🎥'}</span>
               </div>
-              <h3 class="gallery-title">${escapeHtml(item.title)}</h3>
-              ${item.summary ? `<p class="gallery-summary">${escapeHtml(item.summary)}</p>` : ""}
-            </a>
-          ` : `
-            <div class="gallery-link">
-              <div class="gallery-placeholder">
-                <span class="gallery-icon">${kind === 'image' ? '🖼️' : '🎥'}</span>
-              </div>
-              <h3 class="gallery-title">${escapeHtml(item.title)}</h3>
-              ${item.summary ? `<p class="gallery-summary">${escapeHtml(item.summary)}</p>` : ""}
-            </div>
-          `}
+            `}
+          </div>
+          <div class="gallery-info">
+            <h3 class="gallery-title">${escapeHtml(item.title)}</h3>
+            ${item.summary ? `<p class="gallery-summary">${escapeHtml(item.summary)}</p>` : ""}
+            ${fullUrl ? `<a href="${escapeHtml(fullUrl)}" download class="gallery-download">Save as</a>` : ""}
+          </div>
         </article>
-      `).join("")}
+      `}).join("")}
     </div>
 
     ${kindItems.length === 0 ? `<p class="empty-message">No ${kind}s yet. Add some in Notion!</p>` : ""}
   </main>
 
+  <!-- Modal for full-size view -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <div class="modal-content">
+      <img id="modal-image" class="modal-media" />
+      <video id="modal-video" class="modal-media" controls style="display:none;"></video>
+      <div id="modal-caption" class="modal-caption"></div>
+    </div>
+  </div>
+
   ${headerFooter.footer}
+
+  <script>
+    function openModal(url, title, kind) {
+      const modal = document.getElementById('modal');
+      const img = document.getElementById('modal-image');
+      const video = document.getElementById('modal-video');
+      const caption = document.getElementById('modal-caption');
+
+      if (kind === 'video') {
+        img.style.display = 'none';
+        video.style.display = 'block';
+        video.src = url;
+      } else {
+        video.style.display = 'none';
+        img.style.display = 'block';
+        img.src = url;
+      }
+
+      caption.textContent = title;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      const video = document.getElementById('modal-video');
+      modal.style.display = 'none';
+      video.pause();
+      video.src = '';
+      document.body.style.overflow = 'auto';
+    }
+  </script>
   ${headerFooter.script}
 </body>
 </html>`;
@@ -972,6 +1019,8 @@ async function writeGalleryPage(items, kind) {
     const summary = getRichText(page, "Summary") || "";
     const tags = getMultiSelect(page, "Tags");
     const driveUrl = (getProp(page, "Drive URL")?.url) || "";
+    const files = getFiles(page, "Files");
+    const thumbnailUrl = files.length > 0 ? files[0].url : "";
 
     const slug = slugify(title);
     let localPath = "";
@@ -980,11 +1029,11 @@ async function writeGalleryPage(items, kind) {
     if (kind === "article") {
       const blocks = await fetchBlocksAll(page.id);
       headings = extractHeadings(blocks);
-      const contentHtml = blocksToHtml(blocks);
-      localPath = await writeArticlePage({ 
-        title, 
-        slug, 
-        contentHtml, 
+      const contentHtml = await blocksToHtml(blocks);
+      localPath = await writeArticlePage({
+        title,
+        slug,
+        contentHtml,
         tags,
         date: page.last_edited_time,
         headings
@@ -999,6 +1048,8 @@ async function writeGalleryPage(items, kind) {
       summary,
       tags,
       driveUrl,
+      thumbnailUrl,
+      files,
       notionUrl: page.url,
       localPath,
       updatedTime: page.last_edited_time,
