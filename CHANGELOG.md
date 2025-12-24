@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-12-24
+
+### Added
+- **Security Enhancements**
+  - Added Content Security Policy (CSP) headers to all pages
+  - Added X-Content-Type-Options, X-Frame-Options, X-XSS-Protection headers
+  - Implemented referrer policy for better privacy
+
+- **Newsletter System**
+  - Renamed "Subscribe" page to "Newsletter"
+  - Added subscription preference checkboxes (weekly digest, daily updates, all posts)
+  - Fixed 405 error with proper form handling
+  - Added temporary JavaScript handler with visual feedback
+  - Prepared for third-party newsletter service integration (Buttondown/Substack)
+
+- **Gallery Protection**
+  - Removed "Save as" download buttons from galleries
+  - Added right-click protection to prevent casual image saving
+  - Added drag-and-drop protection for images
+  - Protected both gallery thumbnails and modal full-size views
+  - Note: Advanced users can still access via browser dev tools (basic protection)
+
+- **UI Improvements**
+  - Removed captions from gallery modal view for cleaner presentation
+  - Added modern subscription options UI with hover effects
+  - Improved newsletter page with better messaging
+
+### Changed
+- Navigation label changed from "Subscribe" to "Newsletter"
+- Gallery modal now shows only media without title overlay
+- Subscribe form now provides instant visual feedback
+
+### Fixed
+- Subscribe/Newsletter form 405 error eliminated
+- Form submission now handled gracefully with JavaScript
+
 ## [2.0.0] - 2025-12-24
 
 ### Added

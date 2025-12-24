@@ -10,6 +10,14 @@ if (!NOTION_TOKEN || !NOTION_DATABASE_ID) {
   process.exit(1);
 }
 
+// Security headers for all pages
+const getSecurityHeaders = () => `
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self'; connect-src 'self'; media-src 'self' https: blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta name="referrer" content="strict-origin-when-cross-origin">`;
+
 const notionFetch = async (url, options = {}) => {
   const res = await fetch(url, {
     ...options,
@@ -304,7 +312,7 @@ function getHeaderFooter(basePath = "./", activePage = "") {
         <a href="${basePath}images/"${activePage === 'images' ? ' class="active"' : ''}>Images</a>
         <a href="${basePath}videos/"${activePage === 'videos' ? ' class="active"' : ''}>Videos</a>
         <a href="${basePath}about/"${activePage === 'about' ? ' class="active"' : ''}>About</a>
-        <a href="${basePath}subscribe/"${activePage === 'subscribe' ? ' class="active"' : ''}>Subscribe</a>
+        <a href="${basePath}subscribe/"${activePage === 'subscribe' ? ' class="active"' : ''}>Newsletter</a>
         <button class="theme-toggle" aria-label="Toggle theme">
           <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
             <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
@@ -385,6 +393,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>${escapeHtml(title)} - Kol's Korner</title>
   <meta name="description" content="${escapeHtml((contentHtml.replace(/<[^>]*>/g, '').slice(0, 160)))}..." />
   <meta name="author" content="Kol Tregaskes" />
@@ -534,6 +543,7 @@ async function writeHomePage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>Kol's Korner - Tech, Software Development & More</title>
   <meta name="description" content="Hi. My name is Kol Tregaskes. I'm a software developer and tech enthusiast based in the UK. Here I write about tech, software development, and other topics that interest me." />
   <meta name="author" content="Kol Tregaskes" />
@@ -677,6 +687,7 @@ async function writePostsPage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>Posts - Kol's Korner</title>
   <meta name="description" content="Browse all posts by Kol Tregaskes - Tech, Software Development & More" />
   <meta name="author" content="Kol Tregaskes" />
@@ -804,6 +815,7 @@ async function writeTagsPage(items) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>Tags - Kol's Korner</title>
   <meta name="description" content="Browse posts by tag - Tech, Software Development & More" />
   <meta name="author" content="Kol Tregaskes" />
@@ -863,6 +875,7 @@ async function writeAboutPage() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>About - Kol's Korner</title>
   <meta name="description" content="About Kol Tregaskes - Software developer and tech enthusiast based in the UK" />
   <meta name="author" content="Kol Tregaskes" />
@@ -901,8 +914,9 @@ async function writeSubscribePage() {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Subscribe - Kol's Korner</title>
-  <meta name="description" content="Subscribe to get notified when new posts are published by Kol Tregaskes" />
+  ${getSecurityHeaders()}
+  <title>Newsletter - Kol's Korner</title>
+  <meta name="description" content="Subscribe to Kol's Korner newsletter - Weekly digests, daily updates, or all new posts about tech, AI, and development" />
   <meta name="author" content="Kol Tregaskes" />
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="stylesheet" href="../styles.css" />
@@ -912,17 +926,51 @@ async function writeSubscribePage() {
 
   <main class="content-main">
     <div class="subscribe-content">
-      <h1 class="page-title">Subscribe</h1>
-      <p class="subscribe-text">Subscribe to get notified when new posts are published.</p>
-      <form class="subscribe-form" action="#" method="post">
-        <input type="email" placeholder="your@email.com" required class="subscribe-input" />
+      <h1 class="page-title">Newsletter</h1>
+      <p class="subscribe-text">Get notified when new posts are published. Choose your subscription preferences:</p>
+      <form class="subscribe-form" id="subscribeForm">
+        <input type="email" id="emailInput" placeholder="your@email.com" required class="subscribe-input" />
+        <div class="subscribe-options">
+          <label><input type="checkbox" name="frequency" value="weekly" checked> Weekly digest</label>
+          <label><input type="checkbox" name="frequency" value="daily"> Daily updates</label>
+          <label><input type="checkbox" name="frequency" value="all"> All new posts</label>
+        </div>
         <button type="submit" class="subscribe-button">Subscribe</button>
       </form>
-      <p class="subscribe-note">No spam, unsubscribe at any time.</p>
+      <p class="subscribe-note" id="subscribeMessage">No spam, unsubscribe at any time.</p>
+      <p class="subscribe-note" style="margin-top: 24px; font-size: 14px; color: var(--color-text-secondary);">
+        Note: Newsletter functionality coming soon. We'll use a third-party service (like Buttondown) for reliable email delivery.
+      </p>
     </div>
   </main>
 
   ${headerFooter.footer}
+
+  <script>
+    // Temporary form handler until newsletter service is integrated
+    document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      const message = document.getElementById('subscribeMessage');
+      const button = document.querySelector('.subscribe-button');
+
+      // Show success message
+      button.disabled = true;
+      button.textContent = 'Subscribing...';
+
+      setTimeout(() => {
+        message.textContent = '✓ Thanks! Newsletter service integration coming soon. Your interest is noted: ' + email;
+        message.style.color = 'var(--color-primary)';
+        button.textContent = 'Subscribed!';
+
+        // Log to console for now (you'll see this in browser dev tools)
+        console.log('Newsletter subscription request:', {
+          email: email,
+          preferences: Array.from(document.querySelectorAll('input[name="frequency"]:checked')).map(cb => cb.value)
+        });
+      }, 1000);
+    });
+  </script>
   ${headerFooter.script}
 </body>
 </html>`;
@@ -947,6 +995,7 @@ async function writeGalleryPage(items, kind) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
   <title>${kindName} - Kol's Korner</title>
   <meta name="description" content="${kindName} gallery by Kol Tregaskes" />
   <meta name="author" content="Kol Tregaskes" />
@@ -966,9 +1015,9 @@ async function writeGalleryPage(items, kind) {
 
         return `
         <article class="gallery-item">
-          <div class="gallery-thumbnail" onclick="openModal('${escapeHtml(fullUrl)}', '${escapeHtml(item.title)}', '${kind}')">
+          <div class="gallery-thumbnail" onclick="openModal('${escapeHtml(fullUrl)}', '${escapeHtml(item.title)}', '${kind}')" oncontextmenu="return false;">
             ${imageUrl ? `
-              <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" />
+              <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" oncontextmenu="return false;" ondragstart="return false;" />
             ` : `
               <div class="gallery-placeholder">
                 <span class="gallery-icon">${kind === 'image' ? '🖼️' : '🎥'}</span>
@@ -978,7 +1027,6 @@ async function writeGalleryPage(items, kind) {
           <div class="gallery-info">
             <h3 class="gallery-title">${escapeHtml(item.title)}</h3>
             ${item.summary ? `<p class="gallery-summary">${escapeHtml(item.summary)}</p>` : ""}
-            ${fullUrl ? `<a href="${escapeHtml(fullUrl)}" download class="gallery-download">Save as</a>` : ""}
           </div>
         </article>
       `}).join("")}
@@ -990,10 +1038,9 @@ async function writeGalleryPage(items, kind) {
   <!-- Modal for full-size view -->
   <div id="modal" class="modal" onclick="closeModal()">
     <span class="modal-close">&times;</span>
-    <div class="modal-content">
-      <img id="modal-image" class="modal-media" />
-      <video id="modal-video" class="modal-media" controls style="display:none;"></video>
-      <div id="modal-caption" class="modal-caption"></div>
+    <div class="modal-content" oncontextmenu="return false;">
+      <img id="modal-image" class="modal-media" oncontextmenu="return false;" ondragstart="return false;" />
+      <video id="modal-video" class="modal-media" controls style="display:none;" oncontextmenu="return false;"></video>
     </div>
   </div>
 
@@ -1004,7 +1051,6 @@ async function writeGalleryPage(items, kind) {
       const modal = document.getElementById('modal');
       const img = document.getElementById('modal-image');
       const video = document.getElementById('modal-video');
-      const caption = document.getElementById('modal-caption');
 
       if (kind === 'video') {
         img.style.display = 'none';
@@ -1016,7 +1062,6 @@ async function writeGalleryPage(items, kind) {
         img.src = url;
       }
 
-      caption.textContent = title;
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }

@@ -10,13 +10,15 @@ A modern, static blog and portfolio site powered by Notion and GitHub Pages. Wri
 - **🚀 Auto-Deploy** - Hourly syncs from Notion to GitHub Pages
 - **📱 Responsive Design** - Beautiful on desktop, tablet, and mobile
 - **🎨 Modern UI** - Clean design inspired by Off by One
-- **🖼️ Galleries** - Image and video galleries with modal viewing
+- **🖼️ Galleries** - Image and video galleries with modal viewing & right-click protection
 - **🏷️ Tag System** - Organize and browse posts by tags
 - **📖 Table of Contents** - Auto-generated TOC with scroll tracking
 - **⚡ Performance** - Fast static HTML, no runtime dependencies
 - **🎯 SEO Optimized** - Meta tags, Open Graph, Twitter Cards
 - **🌙 Dark Mode** - Theme toggle with localStorage persistence
 - **#️⃣ Hash Headers** - Red hash symbols before headings
+- **📧 Newsletter** - Subscription preferences for weekly, daily, or all posts
+- **🔒 Security** - CSP headers, XSS protection, and anti-clickjacking
 
 ## 🚀 Quick Start
 

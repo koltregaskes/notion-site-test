@@ -986,12 +986,6 @@ code, pre {
   color: var(--color-primary);
 }
 
-.modal-caption {
-  color: #fff;
-  padding: var(--space-16);
-  font-size: var(--font-size-lg);
-}
-
 .empty-message {
   text-align: center;
   color: var(--color-text-secondary);
@@ -1026,6 +1020,36 @@ code, pre {
   color: var(--color-text);
   font-size: var(--font-size-base);
   font-family: var(--font-family-base);
+}
+
+.subscribe-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+}
+
+.subscribe-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.subscribe-options label:hover {
+  color: var(--color-primary);
+}
+
+.subscribe-options input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
 }
 
 .subscribe-button {
