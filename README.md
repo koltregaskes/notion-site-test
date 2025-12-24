@@ -1,132 +1,94 @@
-# notion-site-test
+# Kol's Korner
 
-A static website generated from a Notion database and deployed to GitHub Pages.
+A modern, static blog and portfolio site powered by Notion and GitHub Pages. Write in Notion, publish automatically.
 
-## Features
+[![Deploy Status](https://github.com/koltregaskes/notion-site-test/actions/workflows/pages.yml/badge.svg)](https://github.com/koltregaskes/notion-site-test/actions)
 
-- **Home page**: Hero section + latest posts
-- **Posts page**: Full list of all articles with dates and tags
-- **Tags page**: Browse posts by tag
-- **About page**: Static about page
-- **Individual post pages**: Full article content with table of contents
-- **Automatic builds**: GitHub Actions fetches Notion content hourly and rebuilds site
+## ✨ Features
 
-## How It Works
+- **✍️ Write in Notion** - Use Notion as your CMS with a familiar interface
+- **🚀 Auto-Deploy** - Hourly syncs from Notion to GitHub Pages
+- **📱 Responsive Design** - Beautiful on desktop, tablet, and mobile
+- **🎨 Modern UI** - Clean design inspired by Off by One
+- **🖼️ Galleries** - Image and video galleries with modal viewing
+- **🏷️ Tag System** - Organize and browse posts by tags
+- **📖 Table of Contents** - Auto-generated TOC with scroll tracking
+- **⚡ Performance** - Fast static HTML, no runtime dependencies
+- **🎯 SEO Optimized** - Meta tags, Open Graph, Twitter Cards
+- **🌙 Dark Mode** - Theme toggle with localStorage persistence
+- **#️⃣ Hash Headers** - Red hash symbols before headings
 
-1. **Notion Database**: Content is managed in a Notion database with these properties:
-   - `Name` (Title): Post title
-   - `Kind` (Select): Type of content (article, image, video)
-   - `Publish` (Checkbox): Only published items appear on site
-   - `Summary` (Rich Text): Short description
-   - `Tags` (Multi-select): Post tags
-   - `Drive URL` (URL): Optional external link
+## 🚀 Quick Start
 
-2. **GitHub Actions**: The workflow in `.github/workflows/pages.yml` runs hourly (or on push) to:
-   - Fetch all published items from Notion
-   - Generate static HTML pages for all posts
-   - Build homepage, posts index, tags page, and about page
-   - Deploy to GitHub Pages
+1. **Set up Notion database** - See [SETUP.md](SETUP.md)
+2. **Configure GitHub secrets** - Add `NOTION_TOKEN` and `NOTION_DATABASE_ID`
+3. **Push to main** - GitHub Actions handles the rest
+4. **Posts sync hourly** - Automatic updates every hour at :17
 
-3. **Static Site**: All pages are pre-generated HTML/CSS with no runtime dependencies
+## 📚 Documentation
 
-## Local Development
+- **[SETUP.md](SETUP.md)** - Initial setup and configuration
+- **[USAGE.md](USAGE.md)** - How to add posts, images, and videos
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical details and how it works
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and updates
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues and solutions
+
+## 🛠️ Tech Stack
+
+- **CMS**: Notion API
+- **Build**: Node.js (native modules only)
+- **Hosting**: GitHub Pages
+- **CI/CD**: GitHub Actions
+- **Design**: Custom CSS with design tokens (Perplexity-inspired)
+
+## 📁 Project Structure
+
+```
+notion-site-test/
+├── .github/
+│   └── workflows/
+│       └── pages.yml          # Auto-deploy workflow
+├── scripts/
+│   └── fetch-notion.mjs       # Build script
+├── site/                      # Generated files (do not edit)
+│   ├── index.html
+│   ├── styles.css
+│   ├── posts/
+│   ├── images/
+│   ├── videos/
+│   ├── tags/
+│   ├── about/
+│   └── subscribe/
+└── docs/                      # Documentation
+```
+
+## 🎯 Quick Links
+
+- **Live Site**: [https://koltregaskes.github.io/notion-site-test/](https://koltregaskes.github.io/notion-site-test/)
+- **GitHub Repo**: [https://github.com/koltregaskes/notion-site-test](https://github.com/koltregaskes/notion-site-test)
+
+## 🔧 Local Development
 
 ```bash
-# Install dependencies (none required - uses Node built-ins)
-npm install
-
-# Fetch Notion data and build site
+# Set environment variables
 export NOTION_TOKEN="your_notion_integration_token"
 export NOTION_DATABASE_ID="your_database_id"
+
+# Build site
 node scripts/fetch-notion.mjs
 
-# Serve locally (use any static file server)
-npx http-server site -p 8080
-# Visit http://localhost:8080
+# Serve locally
+cd site
+npx http-server -p 8080
 ```
 
-## Deployment
+Visit http://localhost:8080/notion-site-test/
 
-The site automatically deploys to GitHub Pages via Actions. Manual deployment:
+## 📝 License
 
-1. Ensure secrets are set in GitHub repo settings:
-   - `NOTION_TOKEN`
-   - `NOTION_DATABASE_ID`
+MIT License - Feel free to fork for your own use!
 
-2. Push to `main` branch or manually trigger workflow
+## 🙏 Credits
 
-3. Site will be available at: `https://<username>.github.io/<repo-name>/`
-
-## File Structure
-
-```
-.
-├── .github/workflows/
-│   └── pages.yml          # GitHub Actions workflow
-├── scripts/
-│   └── fetch-notion.mjs   # Notion API client & site generator
-├── site/                  # Generated static site
-│   ├── index.html         # Home page
-│   ├── home-styles.css    # Styles for home/posts/tags/about
-│   ├── post-styles.css    # Styles for individual posts
-│   ├── posts/
-│   │   ├── index.html     # All posts page
-│   │   └── {slug}/
-│   │       └── index.html # Individual post pages
-│   ├── tags/
-│   │   └── index.html     # Tags page
-│   ├── about/
-│   │   └── index.html     # About page
-│   └── data/
-│       └── notion.json    # Raw data (for backwards compatibility)
-└── README.md
-```
-
-## Customisation
-
-### Edit the About Page
-
-Modify the `writeAboutPage()` function in `scripts/fetch-notion.mjs`.
-
-### Change Styling
-
-- Edit `site/home-styles.css` for home/posts/tags/about pages
-- Edit `site/post-styles.css` for individual post pages
-
-### Modify Build Frequency
-
-Edit the `cron` schedule in `.github/workflows/pages.yml`:
-```yaml
-schedule:
-  - cron: "17 * * * *"  # Every hour at :17
-```
-
-## Troubleshooting
-
-**No posts showing:**
-1. Verify posts have `Publish` checkbox enabled in Notion
-2. Check GitHub Actions logs for build errors
-3. Ensure `NOTION_TOKEN` and `NOTION_DATABASE_ID` secrets are set correctly
-
-**Broken links:**
-- Ensure all internal links use the repo base path (`/notion-site-test/`)
-- Check that `localPath` is correctly generated in fetch script
-
-**Styling issues:**
-- Clear browser cache
-- Verify CSS files are in the `site/` directory before build
-
-## Task 1 Fix Summary
-
-**Root Cause**: ID mismatch between HTML and JavaScript
-- HTML had `<div id="grid">` but JS looked for `$("#list")`
-- HTML had `<p id="meta">` but JS looked for `$("#count")`
-
-**Fix Applied**:
-- Updated `site/index.html` to use correct IDs
-- Added comprehensive error handling in `site/app.js`
-- Added debug logging to console for troubleshooting
-
-## License
-
-MIT
+- Design inspired by [Off by One](https://justoffbyone.com)
+- Built by Kol Tregaskes
