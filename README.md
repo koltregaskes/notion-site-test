@@ -155,11 +155,19 @@ Example: [https://koltregaskes.github.io/notion-site-test/](https://koltregaskes
 
 ## 📚 Documentation
 
+**Primary Documentation:**
 - **[SETUP.md](SETUP.md)** - Initial setup and configuration
 - **[USAGE.md](USAGE.md)** - How to add posts, images, and videos
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical details and how it works
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and updates
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues and solutions
+- **[COSTS.md](COSTS.md)** - Cost breakdown and API estimates
+- **[ACCESSIBILITY.md](ACCESSIBILITY.md)** - WCAG 2.2 AA compliance and testing
+- **[CURRENT-STATUS.md](CURRENT-STATUS.md)** - What's working now
+
+**AI/Agent Documentation:**
+- **[llms.txt](llms.txt)** - Comprehensive onboarding for AI tools
+- **[AGENTS.md](AGENTS.md)** - Guidelines for AI agents working on this repo
 
 ## 🛠️ Tech Stack
 
