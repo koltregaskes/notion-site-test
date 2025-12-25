@@ -34,21 +34,21 @@
 - ✅ Add subscription preference options (weekly/daily/all posts)
 - ✅ Add temporary JavaScript handler with visual feedback
 
+### 🖼️ Gallery Enhancements (Sprint 2)
+- ✅ Add prev/next navigation buttons in modal
+- ✅ Enable mouse wheel navigation in modal (up/down)
+- ✅ Implement keyboard navigation (arrow keys, ESC)
+- ✅ Circular navigation (loop from last to first)
+
 ## 🚧 In Progress / Next Sprint
 
-### 🎵 Music/Audio Features (Advanced)
+### 🎵 Music/Audio Features (Advanced - Sprint 3)
 - [ ] Add music visualizer for audio playback
 - [ ] Implement persistent music player in sidebar
 - [ ] Add play/pause, repeat, shuffle, volume controls
 - [ ] Display currently playing song name
 - [ ] Support image thumbnails for music (via Upload property)
 - [ ] Add HTML5 audio player to music cards
-
-### 🖼️ Gallery Enhancements (Sprint 2)
-- [ ] Add prev/next navigation buttons in modal
-- [ ] Enable mouse wheel navigation in modal (up/down)
-- [ ] Implement keyboard navigation (arrow keys, ESC)
-- [ ] Circular navigation (loop from last to first)
 
 ## 📋 Admin & Management
 - [ ] Enhance admin page with newsletter editor
