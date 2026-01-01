@@ -53,7 +53,7 @@ const CONTENT_DIR = process.env.CONTENT_DIR || "content";
 
 // Security headers for all pages
 const getSecurityHeaders = () => `
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; media-src 'self' https: blob:; frame-src https://substack.com https://*.substack.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; media-src 'self' https: blob:; frame-src https://buttondown.com https://buttondown.email; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://buttondown.email;">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -1273,13 +1273,27 @@ async function writeSubscribePage() {
       <h1 class="page-title">Newsletter</h1>
       <p class="subscribe-text">Get notified when new posts are published. Articles on tech, AI, and development delivered to your inbox.</p>
 
-      <div class="substack-embed">
-        <iframe src="https://koltregaskes.substack.com/embed" width="100%" height="320" style="border:1px solid var(--color-card-border); border-radius: 8px; background: var(--color-surface);" frameborder="0" scrolling="no"></iframe>
-      </div>
+      <form
+        action="https://buttondown.email/api/emails/embed-subscribe/koltregaskes"
+        method="post"
+        target="popupwindow"
+        onsubmit="window.open('https://buttondown.email/koltregaskes', 'popupwindow')"
+        class="newsletter-form"
+      >
+        <div class="form-row">
+          <input type="email" name="email" id="bd-email" placeholder="your@email.com" required />
+          <button type="submit">Subscribe</button>
+        </div>
+      </form>
 
       <p class="subscribe-note">No spam, unsubscribe at any time.</p>
       <p class="subscribe-note" style="margin-top: 16px;">
-        <a href="https://koltregaskes.substack.com" target="_blank" rel="noopener" style="color: var(--color-primary);">View on Substack →</a>
+        <a href="/notion-site-test/feed.xml" style="color: var(--color-primary);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
+            <path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36m0-12.64a14.18 14.18 0 0 1 14.18 14.18h-3.64a10.55 10.55 0 0 0-10.54-10.55V3m0 5.09a9.09 9.09 0 0 1 9.09 9.09H11.64a5.45 5.45 0 0 0-5.46-5.45V8.09z"/>
+          </svg>
+          RSS Feed
+        </a>
       </p>
     </div>
   </main>
@@ -1603,6 +1617,45 @@ async function writeGalleryPage(items, kind) {
   await fs.writeFile(`site/${kindPlural}/index.html`, html, "utf8");
 }
 
+// Generate RSS feed
+async function writeRssFeed(items) {
+  const siteUrl = 'https://koltregaskes.github.io/notion-site-test';
+  const articles = items
+    .filter(item => item.kind === 'article')
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 20); // Last 20 articles
+
+  const rssItems = articles.map(item => {
+    const pubDate = new Date(item.date).toUTCString();
+    const link = `${siteUrl}/posts/${item.slug}/`;
+
+    return `
+    <item>
+      <title>${escapeHtml(item.title)}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <description>${escapeHtml(item.summary || '')}</description>
+      ${item.tags.map(tag => `<category>${escapeHtml(tag)}</category>`).join('\n      ')}
+    </item>`;
+  }).join('');
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kol's Korner</title>
+    <link>${siteUrl}</link>
+    <description>Tech, AI, Development &amp; More by Kol Tregaskes</description>
+    <language>en-gb</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
+    ${rssItems}
+  </channel>
+</rss>`;
+
+  await fs.writeFile('site/feed.xml', rss, 'utf8');
+}
+
 // Main build function
 (async () => {
   console.log('Building site from Obsidian markdown files...\n');
@@ -1637,9 +1690,10 @@ async function writeGalleryPage(items, kind) {
   await writeGalleryPage(items, "video");
   await writeGalleryPage(items, "music");
 
-  // Write JSON data for reference
+  // Write JSON data and RSS feed
   await fs.mkdir("site/data", { recursive: true });
   await fs.writeFile("site/data/content.json", JSON.stringify({ items }, null, 2), "utf8");
+  await writeRssFeed(items);
 
   console.log(`\n✓ Generated ${items.length} items`);
   console.log(`✓ Home page: site/index.html`);
@@ -1650,6 +1704,7 @@ async function writeGalleryPage(items, kind) {
   console.log(`✓ Images gallery: site/images/index.html`);
   console.log(`✓ Videos gallery: site/videos/index.html`);
   console.log(`✓ Music gallery: site/music/index.html`);
+  console.log(`✓ RSS feed: site/feed.xml`);
   console.log(`✓ JSON data: site/data/content.json`);
   console.log('\nBuild complete!');
 })();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kol's Korner</title>
+    <link>https://koltregaskes.github.io/notion-site-test</link>
+    <description>Tech, AI, Development &amp; More by Kol Tregaskes</description>
+    <language>en-gb</language>
+    <lastBuildDate>Thu, 01 Jan 2026 03:15:44 GMT</lastBuildDate>
+    <atom:link href="https://koltregaskes.github.io/notion-site-test/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title>My 2026 AI Predictions</title>
+      <link>https://koltregaskes.github.io/notion-site-test/posts/my-2026-ai-predictions/</link>
+      <guid isPermaLink="true">https://koltregaskes.github.io/notion-site-test/posts/my-2026-ai-predictions/</guid>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <description>Bold predictions for how AI will transform our world in 2026 - from coding agents to creative tools.</description>
+      <category>AI</category>
+      <category>predictions</category>
+      <category>2026</category>
+      <category>technology</category>
+    </item>
+    <item>
+      <title>Building My AI Agent Workspace</title>
+      <link>https://koltregaskes.github.io/notion-site-test/posts/building-my-ai-agent-workspace/</link>
+      <guid isPermaLink="true">https://koltregaskes.github.io/notion-site-test/posts/building-my-ai-agent-workspace/</guid>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <description>How I set up a multi-AI workspace with Claude Code, Gemini CLI, and Codex CLI working together.</description>
+      <category>AI</category>
+      <category>agents</category>
+      <category>productivity</category>
+      <category>Claude</category>
+      <category>workflow</category>
+    </item>
+    <item>
+      <title>Welcome to Kol&#039;s Korner</title>
+      <link>https://koltregaskes.github.io/notion-site-test/posts/welcome-to-kols-korner/</link>
+      <guid isPermaLink="true">https://koltregaskes.github.io/notion-site-test/posts/welcome-to-kols-korner/</guid>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <description>Welcome to my new site! Here I&#039;ll share thoughts on tech, AI, and development.</description>
+      <category>welcome</category>
+      <category>intro</category>
+    </item>
+    <item>
+      <title>Markdown Formatting Guide</title>
+      <link>https://koltregaskes.github.io/notion-site-test/posts/markdown-formatting-guide/</link>
+      <guid isPermaLink="true">https://koltregaskes.github.io/notion-site-test/posts/markdown-formatting-guide/</guid>
+      <pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate>
+      <description>A comprehensive reference for all the markdown formatting supported on this site.</description>
+      <category>markdown</category>
+      <category>guide</category>
+      <category>reference</category>
+    </item>
+  </channel>
+</rss>
