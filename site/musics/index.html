@@ -50,9 +50,21 @@
 
     <div class="gallery-grid">
       
+        <article class="gallery-item">
+          <div class="gallery-thumbnail" onclick="openModal('/notion-site-test/media/ad-infinitum.mp3', 'Ad Infinitum', 'music')">
+            
+              <img src="/notion-site-test/media/ad-infinitum.mp3" alt="Ad Infinitum" loading="lazy" />
+            
+          </div>
+          <div class="gallery-info">
+            <h3 class="gallery-title">Ad Infinitum</h3>
+            <p class="gallery-summary">An ambient electronic track with infinite possibilities.</p>
+          </div>
+        </article>
+      
     </div>
 
-    <p class="empty-message">No musics yet. Add some to your content folder!</p>
+    
   </main>
 
   <!-- Modal for full-size view -->
@@ -99,7 +111,7 @@
   </footer>
 
   <script>
-    const galleryItems = [];
+    const galleryItems = [{"url":"/notion-site-test/media/ad-infinitum.mp3","title":"Ad Infinitum","kind":"music"}];
 
     let currentIndex = 0;
 

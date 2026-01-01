@@ -50,9 +50,21 @@
 
     <div class="gallery-grid">
       
+        <article class="gallery-item">
+          <div class="gallery-thumbnail" onclick="openModal('/notion-site-test/media/nano-banana.png', 'Nano Banana - Futuristic AI Art', 'image')">
+            
+              <img src="/notion-site-test/media/nano-banana.png" alt="Nano Banana - Futuristic AI Art" loading="lazy" />
+            
+          </div>
+          <div class="gallery-info">
+            <h3 class="gallery-title">Nano Banana - Futuristic AI Art</h3>
+            <p class="gallery-summary">A futuristic glowing blue geometric design created with AI image generation.</p>
+          </div>
+        </article>
+      
     </div>
 
-    <p class="empty-message">No images yet. Add some to your content folder!</p>
+    
   </main>
 
   <!-- Modal for full-size view -->
@@ -99,7 +111,7 @@
   </footer>
 
   <script>
-    const galleryItems = [];
+    const galleryItems = [{"url":"/notion-site-test/media/nano-banana.png","title":"Nano Banana - Futuristic AI Art","kind":"image"}];
 
     let currentIndex = 0;
 

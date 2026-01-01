@@ -159,6 +159,42 @@
       "localPath": "/posts/building-my-ai-agent-workspace/"
     },
     {
+      "title": "Happy New Year 2026",
+      "slug": "happy-new-year-2026",
+      "kind": "video",
+      "summary": "Celebrating the start of 2026 - a new year of possibilities and AI adventures.",
+      "tags": [
+        "celebration",
+        "new year",
+        "2026"
+      ],
+      "thumbnailUrl": "",
+      "driveUrl": "/notion-site-test/media/happy-new-year-2026.mp4",
+      "contentHtml": "",
+      "headings": [],
+      "readingTime": 1,
+      "date": "2026-01-01",
+      "updatedTime": "2026-01-01"
+    },
+    {
+      "title": "Nano Banana - Futuristic AI Art",
+      "slug": "nano-banana-futuristic-ai-art",
+      "kind": "image",
+      "summary": "A futuristic glowing blue geometric design created with AI image generation.",
+      "tags": [
+        "AI art",
+        "generated",
+        "futuristic"
+      ],
+      "thumbnailUrl": "",
+      "driveUrl": "/notion-site-test/media/nano-banana.png",
+      "contentHtml": "",
+      "headings": [],
+      "readingTime": 1,
+      "date": "2026-01-01",
+      "updatedTime": "2026-01-01"
+    },
+    {
       "title": "Welcome to Kol's Korner",
       "slug": "welcome-to-kols-korner",
       "kind": "article",
@@ -291,6 +327,24 @@
       "date": "2025-12-30",
       "updatedTime": "2025-12-30",
       "localPath": "/posts/markdown-formatting-guide/"
+    },
+    {
+      "title": "Ad Infinitum",
+      "slug": "ad-infinitum",
+      "kind": "music",
+      "summary": "An ambient electronic track with infinite possibilities.",
+      "tags": [
+        "music",
+        "ambient",
+        "electronic"
+      ],
+      "thumbnailUrl": "",
+      "driveUrl": "/notion-site-test/media/ad-infinitum.mp3",
+      "contentHtml": "",
+      "headings": [],
+      "readingTime": 1,
+      "date": "2025-12-11",
+      "updatedTime": "2025-12-11"
     }
   ]
 }
