@@ -288,6 +288,87 @@ function generateTOC(headings) {
   `;
 }
 
+// Reusable header/navigation HTML (blog-only navigation)
+function getHeaderHTML(basePath = '/notion-site-test/') {
+  return `
+  <header class="site-header">
+    <div class="header-content">
+      <a href="${basePath}" class="site-logo">
+        <span class="logo-icon">K</span>
+        <span class="logo-text">Kol's Korner</span>
+      </a>
+      <nav class="site-nav">
+        <a href="${basePath}posts/">Posts</a>
+        <a href="${basePath}tags/">Tags</a>
+        <a href="${basePath}about/">About</a>
+        <a href="${basePath}subscribe/">Newsletter</a>
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
+            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
+            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>`;
+}
+
+// Reusable footer HTML
+function getFooterHTML() {
+  return `
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 All rights reserved.</p>
+      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
+    </div>
+    <div class="footer-social">
+      <a href="https://x.com/koltregaskes" aria-label="X (Twitter)" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+      <a href="https://www.threads.com/@koltregaskes" aria-label="Threads" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.96-.065-1.182.408-2.256 1.332-3.023.88-.73 2.123-1.149 3.503-1.18 1.016-.023 1.97.092 2.862.345-.034-1.466-.383-2.417-1.25-3.058-.707-.521-1.675-.79-2.878-.8h-.015c-1.124.01-2.038.267-2.716.764l-1.085-1.768c1.02-.749 2.326-1.128 3.887-1.128h.02c3.295.02 5.266 1.88 5.482 5.175.125.084.247.172.364.266 1.378 1.103 2.084 2.605 2.042 4.348-.06 2.467-1.217 4.381-3.255 5.381-1.456.714-3.282 1.075-5.434 1.075z"/>
+        </svg>
+      </a>
+      <a href="https://mastodon.social/@koltregaskes" aria-label="Mastodon" target="_blank" rel="noopener me">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.668 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/koltregaskes/" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+      <a href="https://www.youtube.com/koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+      <a href="https://www.tiktok.com/@koltregaskes" aria-label="TikTok" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+        </svg>
+      </a>
+      <a href="https://github.com/koltregaskes" aria-label="GitHub" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>`;
+}
+
 // Copy media files to site folder and generate thumbnails
 async function copyMedia(srcPath, title, kind = 'image') {
   if (!srcPath) return { mediaUrl: '', thumbnailUrl: '' };
@@ -514,35 +595,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
   <link rel="stylesheet" href="/notion-site-test/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="/notion-site-test/" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="/notion-site-test/posts/">Posts</a>
-        <a href="/notion-site-test/tags/">Tags</a>
-        <a href="/notion-site-test/images/">Images</a>
-        <a href="/notion-site-test/videos/">Videos</a>
-        <a href="/notion-site-test/music/">Music</a>
-        <a href="/notion-site-test/about/">About</a>
-        <a href="/notion-site-test/subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('/notion-site-test/')}
 
   <div class="page-container">
     ${toc ? `<aside class="sidebar">
@@ -571,37 +624,7 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
     </main>
   </div>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     // Theme toggle
@@ -665,108 +688,38 @@ async function writeHomePage(items) {
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="./" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="./posts/">Posts</a>
-        <a href="./tags/">Tags</a>
-        <a href="./images/">Images</a>
-        <a href="./videos/">Videos</a>
-        <a href="./music/">Music</a>
-        <a href="./about/">About</a>
-        <a href="./subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('./')}
 
   <main class="home-main">
     <div class="home-intro">
       <h1 class="intro-title">Welcome to Kol's Korner</h1>
-      <p class="intro-text">Tech, AI, development, and creative experiments. Articles, images, videos, and more.</p>
+      <p class="intro-text">Tech, AI, development, and creative experiments from a software developer and AI enthusiast based in the UK.</p>
     </div>
 
-    <!-- Content Filters -->
-    <div class="content-filters">
-      <label class="filter-label">
-        <input type="checkbox" value="article" checked> Articles
-      </label>
-      <label class="filter-label">
-        <input type="checkbox" value="image" checked> Images
-      </label>
-      <label class="filter-label">
-        <input type="checkbox" value="video" checked> Videos
-      </label>
-      <label class="filter-label">
-        <input type="checkbox" value="music" checked> Music
-      </label>
-    </div>
-
-    <!-- Content Grid -->
+    <!-- Article Grid -->
     <div class="content-grid" id="contentGrid">
-      ${sortedItems.map(item => {
-        const kind = (item.kind || 'unknown').toLowerCase();
+      ${sortedItems.filter(item => (item.kind || 'article').toLowerCase() === 'article').map(item => {
         const title = escapeHtml(item.title);
         const summary = escapeHtml(item.summary || '');
-        // Check if we have a generated thumbnail (jpg/png/gif) for display
-        const hasImageThumbnail = item.thumbnailUrl && item.thumbnailUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-
-        let linkUrl = '#';
-        if (kind === 'article') {
-          linkUrl = `./posts/${item.slug}/`;
-        } else if (kind === 'image') {
-          linkUrl = `./images/`;
-        } else if (kind === 'video') {
-          linkUrl = `./videos/`;
-        } else if (kind === 'music') {
-          linkUrl = `./music/`;
-        }
+        const linkUrl = `./posts/${item.slug}/`;
+        const hasImage = item.thumbnailUrl && item.thumbnailUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
 
         return `
-          <article class="content-card" data-kind="${kind}">
+          <article class="content-card">
             <a href="${linkUrl}" class="content-card-link">
-              ${hasImageThumbnail ? `
-                <div class="content-card-media${kind === 'video' ? ' has-thumbnail' : ''}">
+              ${hasImage ? `
+                <div class="content-card-media">
                   <img src="${escapeHtml(item.thumbnailUrl)}" alt="${title}" loading="lazy" />
-                  ${kind === 'video' ? `<svg class="play-overlay" viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>` : ''}
-                  <span class="content-kind-badge">${kind}</span>
                 </div>
-              ` : kind === 'video' ? `
-                <div class="content-card-media video-placeholder">
-                  <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                  <span class="content-kind-badge">${kind}</span>
+              ` : `
+                <div class="content-card-media placeholder">
+                  <div class="placeholder-icon">📝</div>
                 </div>
-              ` : kind === 'music' ? `
-                <div class="content-card-media music-placeholder">
-                  <svg class="music-icon" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                  </svg>
-                  <span class="content-kind-badge">${kind}</span>
-                </div>
-              ` : ''}
-
+              `}
               <div class="content-card-body">
-                ${kind !== 'image' && kind !== 'video' && kind !== 'music' ? `<span class="content-kind-badge">${kind}</span>` : ''}
                 <h3 class="content-card-title">${title}</h3>
                 ${summary ? `<p class="content-card-summary">${summary}</p>` : ''}
-                ${kind === 'article' && item.readingTime ? `
+                ${item.readingTime ? `
                   <div class="content-card-meta">
                     <time>${new Date(item.updatedTime).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" })}</time>
                     <span class="meta-sep">•</span>
@@ -781,37 +734,7 @@ async function writeHomePage(items) {
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     // Theme toggle
@@ -828,29 +751,6 @@ async function writeHomePage(items) {
     // Load saved theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
-
-    // Content filtering
-    const filterCheckboxes = document.querySelectorAll('.content-filters input[type="checkbox"]');
-    const contentCards = document.querySelectorAll('.content-card');
-
-    function applyFilters() {
-      const activeFilters = Array.from(filterCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-
-      contentCards.forEach(card => {
-        const cardKind = card.getAttribute('data-kind');
-        if (activeFilters.length === 0 || activeFilters.includes(cardKind)) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    filterCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', applyFilters);
-    });
   </script>
 </body>
 </html>`;
@@ -876,35 +776,7 @@ async function writePostsPage(items) {
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="../" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="./" class="active">Posts</a>
-        <a href="../tags/">Tags</a>
-        <a href="../images/">Images</a>
-        <a href="../videos/">Videos</a>
-        <a href="../music/">Music</a>
-        <a href="../about/">About</a>
-        <a href="../subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('../')}
 
   <main class="content-main">
     <h1 class="page-title">Posts</h1>
@@ -928,37 +800,7 @@ async function writePostsPage(items) {
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     const themeToggle = document.querySelector('.theme-toggle');
@@ -1002,35 +844,7 @@ async function writeTagsPage(items) {
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="../" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="../posts/">Posts</a>
-        <a href="./" class="active">Tags</a>
-        <a href="../images/">Images</a>
-        <a href="../videos/">Videos</a>
-        <a href="../music/">Music</a>
-        <a href="../about/">About</a>
-        <a href="../subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('../')}
 
   <main class="content-main">
     <h1 class="page-title">Tags</h1>
@@ -1067,37 +881,7 @@ async function writeTagsPage(items) {
     }).join("")}
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     const themeToggle = document.querySelector('.theme-toggle');
@@ -1132,35 +916,7 @@ async function writeAboutPage() {
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="../" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="../posts/">Posts</a>
-        <a href="../tags/">Tags</a>
-        <a href="../images/">Images</a>
-        <a href="../videos/">Videos</a>
-        <a href="../music/">Music</a>
-        <a href="./" class="active">About</a>
-        <a href="../subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('../')}
 
   <main class="content-main">
     <article class="about-content">
@@ -1173,37 +929,7 @@ async function writeAboutPage() {
     </article>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     const themeToggle = document.querySelector('.theme-toggle');
@@ -1238,35 +964,7 @@ async function writeSubscribePage() {
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="../" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="../posts/">Posts</a>
-        <a href="../tags/">Tags</a>
-        <a href="../images/">Images</a>
-        <a href="../videos/">Videos</a>
-        <a href="../music/">Music</a>
-        <a href="../about/">About</a>
-        <a href="./" class="active">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+  ${getHeaderHTML('../')}
 
   <main class="content-main">
     <div class="subscribe-content">
@@ -1298,37 +996,7 @@ async function writeSubscribePage() {
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
+  ${getFooterHTML()}
 
   <script>
     document.getElementById('subscribeForm').addEventListener('submit', function(e) {
@@ -1362,259 +1030,6 @@ async function writeSubscribePage() {
 </html>`;
 
   await fs.writeFile("site/subscribe/index.html", html, "utf8");
-}
-
-async function writeGalleryPage(items, kind) {
-  const kindItems = items
-    .filter(i => i.kind === kind)
-    .sort((a, b) => new Date(b.updatedTime) - new Date(a.updatedTime));
-
-  // Proper pluralization (music stays music, not musics)
-  const kindPlural = kind === 'music' ? 'music' : kind + 's';
-  const kindName = kind.charAt(0).toUpperCase() + kind.slice(1) + (kind === 'music' ? '' : 's');
-
-  await fs.mkdir(`site/${kindPlural}`, { recursive: true });
-
-  const html = `<!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  ${getSecurityHeaders()}
-  <title>${kindName} - Kol's Korner</title>
-  <meta name="description" content="${kindName} gallery by Kol Tregaskes" />
-  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="header-content">
-      <a href="../" class="site-logo">
-        <span class="logo-icon">K</span>
-        <span class="logo-text">Kol's Korner</span>
-      </a>
-      <nav class="site-nav">
-        <a href="../posts/">Posts</a>
-        <a href="../tags/">Tags</a>
-        <a href="../images/"${kind === 'image' ? ' class="active"' : ''}>Images</a>
-        <a href="../videos/"${kind === 'video' ? ' class="active"' : ''}>Videos</a>
-        <a href="../music/"${kind === 'music' ? ' class="active"' : ''}>Music</a>
-        <a href="../about/">About</a>
-        <a href="../subscribe/">Newsletter</a>
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="2" x2="10" y2="4" stroke="currentColor" stroke-width="2"/>
-            <line x1="10" y1="16" x2="10" y2="18" stroke="currentColor" stroke-width="2"/>
-            <line x1="2" y1="10" x2="4" y2="10" stroke="currentColor" stroke-width="2"/>
-            <line x1="16" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M17 10.5C16 14.5 12 18 8 18C4 18 2 14.5 2 10.5C2 6.5 4 3 8 3C8.5 3 9 3.1 9.5 3.2C7.5 4.5 6.5 6.5 6.5 9C6.5 12.5 9 15 12.5 15C14.5 15 16.5 14 17.8 12C17.3 11.5 17 11 17 10.5Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="content-main">
-    <h1 class="page-title">${kindName}</h1>
-
-    <div class="gallery-grid">
-      ${kindItems.map(item => {
-        // driveUrl is the actual media file (mp4, mp3), thumbnailUrl is the generated thumbnail
-        const playableUrl = item.driveUrl || '';
-        const isVideo = kind === 'video';
-        const isAudio = kind === 'music';
-        // Check if we have a generated thumbnail (jpg/png) for video/music
-        const hasImageThumbnail = item.thumbnailUrl && item.thumbnailUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-
-        return `
-        <article class="gallery-item">
-          <div class="gallery-thumbnail${hasImageThumbnail && isVideo ? ' has-thumbnail' : ''}" onclick="openModal('${escapeHtml(playableUrl)}', '${escapeHtml(item.title)}', '${kind}')">
-            ${hasImageThumbnail ? `
-              <img src="${escapeHtml(item.thumbnailUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" />
-              ${isVideo ? `<svg class="play-overlay" viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>` : ''}
-            ` : isVideo ? `
-              <div class="gallery-placeholder video-placeholder">
-                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-                <span class="gallery-icon-label">Video</span>
-              </div>
-            ` : isAudio ? `
-              <div class="gallery-placeholder music-placeholder">
-                <svg class="music-icon" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                </svg>
-                <span class="gallery-icon-label">Music</span>
-              </div>
-            ` : playableUrl ? `
-              <img src="${escapeHtml(playableUrl)}" alt="${escapeHtml(item.title)}" loading="lazy" />
-            ` : `
-              <div class="gallery-placeholder">
-                <span class="gallery-icon">${kind === 'image' ? '🖼️' : kind === 'video' ? '🎥' : '🎵'}</span>
-              </div>
-            `}
-          </div>
-          <div class="gallery-info">
-            <h3 class="gallery-title">${escapeHtml(item.title)}</h3>
-            ${item.summary ? `<p class="gallery-summary">${escapeHtml(item.summary)}</p>` : ""}
-          </div>
-        </article>
-      `}).join("")}
-    </div>
-
-    ${kindItems.length === 0 ? `<p class="empty-message">No ${kind}s yet. Add some to your content folder!</p>` : ""}
-  </main>
-
-  <!-- Modal for full-size view -->
-  <div id="modal" class="modal">
-    <span class="modal-close" onclick="closeModal()">&times;</span>
-    <button class="modal-nav modal-nav-prev" onclick="navigateGallery(-1); event.stopPropagation();">‹</button>
-    <button class="modal-nav modal-nav-next" onclick="navigateGallery(1); event.stopPropagation();">›</button>
-    <div class="modal-content" onclick="event.stopPropagation();">
-      <img id="modal-image" class="modal-media" />
-      <video id="modal-video" class="modal-media" controls style="display:none;"></video>
-      <div id="modal-audio-container" class="modal-audio-container" style="display:none;">
-        <div class="audio-artwork">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="80" height="80">
-            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-          </svg>
-        </div>
-        <h3 id="modal-audio-title" class="audio-title"></h3>
-        <audio id="modal-audio" controls></audio>
-      </div>
-    </div>
-  </div>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <p>&copy; 2026 All rights reserved.</p>
-      <p class="footer-credit">Made in the UK by Kol Tregaskes. Design inspired by <a href="https://justoffbyone.com" target="_blank" rel="noopener">Off by One</a>.</p>
-    </div>
-    <div class="footer-social">
-      <a href="https://twitter.com/koltregaskes" aria-label="Twitter" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-      </a>
-      <a href="https://instagram.com/koltregaskes" aria-label="Instagram" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      </a>
-      <a href="https://youtube.com/@koltregaskes" aria-label="YouTube" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-      </a>
-      <a href="https://koltregaskes.com" aria-label="Website" target="_blank" rel="noopener">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </a>
-    </div>
-  </footer>
-
-  <script>
-    const galleryItems = ${JSON.stringify(kindItems.map(item => ({
-      url: item.thumbnailUrl || item.driveUrl || '',
-      title: item.title,
-      kind: kind
-    })))};
-
-    let currentIndex = 0;
-
-    function openModal(url, title, kind) {
-      if (!url) return;
-      currentIndex = galleryItems.findIndex(item => item.url === url);
-      if (currentIndex === -1) currentIndex = 0;
-      showModalItem(currentIndex);
-      document.getElementById('modal').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function showModalItem(index) {
-      const item = galleryItems[index];
-      if (!item || !item.url) return;
-      const img = document.getElementById('modal-image');
-      const video = document.getElementById('modal-video');
-      const audioContainer = document.getElementById('modal-audio-container');
-      const audio = document.getElementById('modal-audio');
-      const audioTitle = document.getElementById('modal-audio-title');
-
-      // Hide all first
-      img.style.display = 'none';
-      video.style.display = 'none';
-      audioContainer.style.display = 'none';
-
-      if (item.kind === 'video') {
-        video.style.display = 'block';
-        video.src = item.url;
-      } else if (item.kind === 'music') {
-        audioContainer.style.display = 'flex';
-        audio.src = item.url;
-        audioTitle.textContent = item.title;
-      } else {
-        img.style.display = 'block';
-        img.src = item.url;
-      }
-    }
-
-    function navigateGallery(direction) {
-      currentIndex = (currentIndex + direction + galleryItems.length) % galleryItems.length;
-      showModalItem(currentIndex);
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('modal');
-      const video = document.getElementById('modal-video');
-      const audio = document.getElementById('modal-audio');
-      modal.style.display = 'none';
-      video.pause();
-      video.src = '';
-      audio.pause();
-      audio.src = '';
-      document.body.style.overflow = 'auto';
-    }
-
-    document.addEventListener('keydown', function(e) {
-      const modal = document.getElementById('modal');
-      if (modal.style.display === 'flex') {
-        if (e.key === 'ArrowLeft') navigateGallery(-1);
-        else if (e.key === 'ArrowRight') navigateGallery(1);
-        else if (e.key === 'Escape') closeModal();
-      }
-    });
-
-    document.getElementById('modal').addEventListener('wheel', function(e) {
-      e.preventDefault();
-      navigateGallery(e.deltaY > 0 ? 1 : -1);
-    });
-
-    document.getElementById('modal').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
-
-    const themeToggle = document.querySelector('.theme-toggle');
-    const html = document.documentElement;
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    });
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    html.setAttribute('data-theme', savedTheme);
-  </script>
-</body>
-</html>`;
-
-  await fs.writeFile(`site/${kindPlural}/index.html`, html, "utf8");
 }
 
 // Generate RSS feed
@@ -1686,10 +1101,6 @@ async function writeRssFeed(items) {
   await writeTagsPage(items);
   await writeAboutPage();
   await writeSubscribePage();
-  await writeGalleryPage(items, "image");
-  await writeGalleryPage(items, "video");
-  await writeGalleryPage(items, "music");
-
   // Write JSON data and RSS feed
   await fs.mkdir("site/data", { recursive: true });
   await fs.writeFile("site/data/content.json", JSON.stringify({ items }, null, 2), "utf8");
@@ -1701,9 +1112,6 @@ async function writeRssFeed(items) {
   console.log(`✓ Tags page: site/tags/index.html`);
   console.log(`✓ About page: site/about/index.html`);
   console.log(`✓ Newsletter page: site/subscribe/index.html`);
-  console.log(`✓ Images gallery: site/images/index.html`);
-  console.log(`✓ Videos gallery: site/videos/index.html`);
-  console.log(`✓ Music gallery: site/music/index.html`);
   console.log(`✓ RSS feed: site/feed.xml`);
   console.log(`✓ JSON data: site/data/content.json`);
   console.log('\nBuild complete!');
