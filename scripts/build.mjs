@@ -425,8 +425,10 @@ async function readContentFiles() {
 
     for (const file of files) {
       if (!file.endsWith('.md')) continue;
-      // Skip CLAUDE.md files (workspace documentation)
+      // Skip CLAUDE.md files and pages/ folder (static pages handled separately)
       if (file.toUpperCase().includes('CLAUDE.MD')) continue;
+      if (file.startsWith('pages/') || file.startsWith('pages\\')) continue;
+      if (file.startsWith('templates/') || file.startsWith('templates\\')) continue;
 
       const filePath = path.join(CONTENT_DIR, file);
       const content = await fs.readFile(filePath, 'utf8');
@@ -677,7 +679,7 @@ async function writeHomePage(items) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   ${getSecurityHeaders()}
   <title>Kol's Korner - Tech, AI, Development & More</title>
-  <meta name="description" content="Hi. My name is Kol Tregaskes. I'm a software developer and AI enthusiast based in the UK. Articles, images, videos, and music about tech, AI, and development." />
+  <meta name="description" content="Hi. My name is Kol Tregaskes. I'm a software developer and AI enthusiast based in the UK. Writing about AI agents, creative tools, and technology." />
   <meta name="author" content="Kol Tregaskes" />
   <meta property="og:title" content="Kol's Korner" />
   <meta property="og:description" content="Tech, AI, Development & More" />
@@ -901,8 +903,21 @@ async function writeTagsPage(items) {
   await fs.writeFile("site/tags/index.html", html, "utf8");
 }
 
-async function writeAboutPage() {
-  await fs.mkdir("site/about", { recursive: true });
+async function writeStaticPage(slug, fallbackTitle, fallbackBody) {
+  await fs.mkdir(`site/${slug}`, { recursive: true });
+
+  // Try to read from content/pages/{slug}.md
+  let title = fallbackTitle;
+  let bodyHtml = fallbackBody;
+  try {
+    const mdPath = path.join(CONTENT_DIR, 'pages', `${slug}.md`);
+    const raw = await fs.readFile(mdPath, 'utf8');
+    const parsed = parseFrontmatter(raw);
+    title = parsed.frontmatter.title || fallbackTitle;
+    bodyHtml = markdownToHtml(parsed.body);
+  } catch {
+    // Use fallback content
+  }
 
   const html = `<!doctype html>
 <html lang="en" data-theme="dark">
@@ -910,8 +925,8 @@ async function writeAboutPage() {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   ${getSecurityHeaders()}
-  <title>About - Kol's Korner</title>
-  <meta name="description" content="About Kol Tregaskes - Software developer and tech enthusiast based in the UK" />
+  <title>${escapeHtml(title)} - Kol's Korner</title>
+  <meta name="description" content="${escapeHtml(title)} - Kol Tregaskes" />
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="stylesheet" href="../styles.css" />
 </head>
@@ -920,11 +935,8 @@ async function writeAboutPage() {
 
   <main class="content-main">
     <article class="about-content">
-      <h1 class="page-title">About</h1>
       <div class="about-body">
-        <p>Hi. My name is Kol Tregaskes. I'm a software developer and tech enthusiast based in the UK.</p>
-        <p>This blog is about tech, software development, and other topics that interest me.</p>
-        <p>You can find me on <a href="https://twitter.com/koltregaskes" target="_blank">Twitter</a>, <a href="https://instagram.com/koltregaskes" target="_blank">Instagram</a>, and <a href="https://youtube.com/@koltregaskes" target="_blank">YouTube</a>.</p>
+        ${bodyHtml}
       </div>
     </article>
   </main>
@@ -946,7 +958,11 @@ async function writeAboutPage() {
 </body>
 </html>`;
 
-  await fs.writeFile("site/about/index.html", html, "utf8");
+  await fs.writeFile(`site/${slug}/index.html`, html, "utf8");
+}
+
+async function writeAboutPage() {
+  await writeStaticPage('about', 'About', '<p>About Kol Tregaskes.</p>');
 }
 
 async function writeSubscribePage() {
