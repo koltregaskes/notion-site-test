@@ -160,7 +160,15 @@ function markdownToHtml(md) {
     return `<h2 id="${slugify(text)}"><span class="hash">#</span> ${text}</h2>`;
   });
 
-  // Blockquotes
+  // Callouts (must come before regular blockquotes)
+  html = html.replace(/^> \[!(NOTE|TIP|WARNING|IMPORTANT)\]([^\n]*)\n((?:^>.*\n?)*)/gm, (match, type, title, content) => {
+    const calloutType = type.toLowerCase();
+    const displayTitle = title.trim() || type.charAt(0) + type.slice(1).toLowerCase();
+    const cleanContent = content.split('\n').map(l => l.replace(/^>\s?/, '')).join('\n').trim();
+    return `<div class="callout callout-${calloutType}"><div class="callout-title">${displayTitle}</div><div class="callout-content">${cleanContent}</div></div>`;
+  });
+
+  // Regular blockquotes
   html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
 
   // Horizontal rules
@@ -220,6 +228,19 @@ function markdownToHtml(md) {
 
   // Inline code (after bold/italic to avoid conflicts)
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Strikethrough
+  html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+  // Highlighting
+  html = html.replace(/==(.+?)==/g, '<mark>$1</mark>');
+
+  // Wikilinks [[note]] or [[note|display text]]
+  html = html.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (match, noteName, displayText) => {
+    const slug = noteName.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]/g, '').replace(/--+/g, '-');
+    const linkText = displayText?.trim() || noteName.trim();
+    return `<a href="/notion-site-test/posts/${slug}/" class="wikilink">${linkText}</a>`;
+  });
 
   // Step 6: Wrap remaining lines in paragraphs
   const finalLines = html.split('\n');

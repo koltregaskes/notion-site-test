@@ -1,0 +1,88 @@
+name: Daily News Digest
+
+on:
+  schedule:
+    # Run at 6:00 AM UTC daily
+    - cron: '0 6 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date for digest (YYYY-MM-DD)'
+        required: false
+        default: ''
+      force:
+        description: 'Force overwrite existing digest'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  generate-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Determine date
+        id: date
+        run: |
+          if [ -n "${{ inputs.date }}" ]; then
+            echo "TARGET_DATE=${{ inputs.date }}" >> $GITHUB_ENV
+          else
+            echo "TARGET_DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+          fi
+
+      - name: Generate digest
+        run: |
+          ARGS="--date $TARGET_DATE --allow-empty"
+
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+
+          node scripts/generate-daily-digest.mjs $ARGS
+
+      - name: Build site
+        run: node scripts/build.mjs
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet content/ site/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add content/ site/
+          git commit -m "chore: Add daily digest for $TARGET_DATE
+
+          Generated automatically by GitHub Actions.
+
+          Co-Authored-By: GitHub Actions <actions@github.com>"
+
+          git push
+
+      - name: Summary
+        run: |
+          echo "## Daily Digest Generation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $TARGET_DATE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
