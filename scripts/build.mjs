@@ -690,6 +690,88 @@ async function writeArticlePage({ title, slug, contentHtml, tags, date, headings
   return { localPath: `/posts/${slug}/`, readingTime };
 }
 
+// Write a dedicated digest page with special styling
+async function writeDigestPage({ title, slug, contentHtml, tags, date, readingTime, digestData }) {
+  const outDir = path.join("site", "posts", slug);
+  await fs.mkdir(outDir, { recursive: true });
+
+  const displayDate = new Date(date).toLocaleDateString("en-GB", {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  const tagsHtml = tags.length ? `<div class="post-tags">${tags.map(t => `<a href="/notion-site-test/tags/#${slugify(t)}" class="tag">${escapeHtml(t)}</a>`).join("")}</div>` : "";
+
+  // External link icon SVG
+  const externalLinkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  const html = `<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
+  <title>${escapeHtml(title)} - Kol's Korner</title>
+  <meta name="description" content="AI and technology news digest for ${displayDate}" />
+  <meta name="author" content="Kol Tregaskes" />
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="AI and technology news digest for ${displayDate}" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@koltregaskes" />
+  <link rel="icon" type="image/x-icon" href="/notion-site-test/favicon.ico" />
+  <link rel="stylesheet" href="/notion-site-test/styles.css" />
+</head>
+<body>
+  ${getHeaderHTML('/notion-site-test/')}
+
+  <main class="content-main">
+    <article class="post">
+      <!-- Digest Header -->
+      <header class="digest-header">
+        <span class="digest-badge">Daily Digest</span>
+        <h1 class="digest-title">${displayDate}</h1>
+        <p class="digest-subtitle">Today's AI news, curated by Kol</p>
+      </header>
+
+      <p class="digest-intro">Welcome to today's roundup of the most interesting developments in AI and technology.</p>
+
+      <!-- Digest Content -->
+      <div class="post-content digest-content">
+        ${contentHtml}
+      </div>
+
+      <footer class="digest-footer">
+        <p>This digest was automatically generated • ${readingTime} min read</p>
+      </footer>
+
+      ${tagsHtml}
+    </article>
+  </main>
+
+  ${getFooterHTML()}
+
+  <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>`;
+
+  await fs.writeFile(path.join(outDir, "index.html"), html, "utf8");
+  return { localPath: `/posts/${slug}/`, readingTime };
+}
+
 async function writeHomePage(items) {
   const sortedItems = items.sort((a, b) => new Date(b.updatedTime) - new Date(a.updatedTime));
 
@@ -872,41 +954,43 @@ async function writeTagsPage(items) {
   <main class="content-main">
     <h1 class="page-title">Tags</h1>
 
-    ${sortedTags.length === 0 ? '<p class="empty-message">No tags yet. Add tags to your posts!</p>' : ''}
+    ${sortedTags.length === 0 ? '<p class="empty-message">No tags yet. Add tags to your posts!</p>' : `
+    <!-- Tag Cloud -->
+    <nav class="tag-cloud" aria-label="Filter by tag">
+      <a href="#" class="active" data-tag="all">All <span class="tag-count">(${items.filter(i => i.kind === "article").length})</span></a>
+      ${sortedTags.map(([tag, count]) => {
+        const tagId = slugify(tag);
+        return `<a href="#${tagId}" data-tag="${tagId}">${escapeHtml(tag)} <span class="tag-count">(${count})</span></a>`;
+      }).join("\n      ")}
+    </nav>
 
+    <!-- Tag Sections -->
     ${sortedTags.map(([tag, count]) => {
       const tagPosts = items.filter(i => i.kind === "article" && i.tags.includes(tag));
       const tagId = slugify(tag);
       return `
-        <section class="tag-group" id="${tagId}">
-          <h2 class="tag-group-title">
-            <span class="hash">#</span>${escapeHtml(tag)} <span class="tag-group-count">(${count})</span>
-          </h2>
-          <div class="posts-list">
-            ${tagPosts.map(item => {
-              return `
-                <article class="post-item">
-                  <a href="../posts/${item.slug}/" class="post-link">
-                    <h3 class="post-item-title">${escapeHtml(item.title)}</h3>
-                    <p class="post-item-summary">${escapeHtml(item.summary || "")}</p>
-                    <div class="post-item-meta">
-                      <time>${new Date(item.date).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })}</time>
-                      <span class="meta-sep">•</span>
-                      <span>${item.readingTime} min read</span>
-                    </div>
-                  </a>
-                </article>
-              `;
-            }).join("")}
-          </div>
-        </section>
-      `;
-    }).join("")}
+    <section class="tag-section" id="${tagId}" data-tag="${tagId}">
+      <header class="tag-section-header">
+        <h2 class="tag-section-title"><span class="hash">#</span>${escapeHtml(tag)}</h2>
+        <span class="tag-section-count">${count} post${count !== 1 ? 's' : ''}</span>
+      </header>
+      <div class="post-rows">
+        ${tagPosts.map(item => {
+          return `<a href="../posts/${item.slug}/" class="post-row">
+          <span class="post-row-title">${escapeHtml(item.title)}</span>
+          <time class="post-row-date">${new Date(item.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</time>
+        </a>`;
+        }).join("\n        ")}
+      </div>
+    </section>`;
+    }).join("\n")}
+    `}
   </main>
 
   ${getFooterHTML()}
 
   <script>
+    // Theme toggle
     const themeToggle = document.querySelector('.theme-toggle');
     const html = document.documentElement;
     themeToggle.addEventListener('click', () => {
@@ -917,6 +1001,41 @@ async function writeTagsPage(items) {
     });
     const savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
+
+    // Tag filtering
+    const tagCloud = document.querySelector('.tag-cloud');
+    const tagSections = document.querySelectorAll('.tag-section');
+
+    if (tagCloud) {
+      tagCloud.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        e.preventDefault();
+        const selectedTag = link.dataset.tag;
+
+        // Update active state
+        tagCloud.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+
+        // Filter sections
+        tagSections.forEach(section => {
+          if (selectedTag === 'all' || section.dataset.tag === selectedTag) {
+            section.style.display = '';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+
+        // Scroll to section if specific tag selected
+        if (selectedTag !== 'all') {
+          const targetSection = document.getElementById(selectedTag);
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>`;
@@ -983,7 +1102,88 @@ async function writeStaticPage(slug, fallbackTitle, fallbackBody) {
 }
 
 async function writeAboutPage() {
-  await writeStaticPage('about', 'About', '<p>About Kol Tregaskes.</p>');
+  await fs.mkdir("site/about", { recursive: true });
+
+  // Social links with icons
+  const socialLinks = [
+    { name: 'X/Twitter', url: 'https://x.com/koltregaskes', icon: '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>' },
+    { name: 'Threads', url: 'https://www.threads.com/@koltregaskes', icon: '<path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.96-.065-1.182.408-2.256 1.332-3.023.88-.73 2.123-1.149 3.503-1.18 1.016-.023 1.97.092 2.862.345-.034-1.466-.383-2.417-1.25-3.058-.707-.521-1.675-.79-2.878-.8h-.015c-1.124.01-2.038.267-2.716.764l-1.085-1.768c1.02-.749 2.326-1.128 3.887-1.128h.02c3.295.02 5.266 1.88 5.482 5.175.125.084.247.172.364.266 1.378 1.103 2.084 2.605 2.042 4.348-.06 2.467-1.217 4.381-3.255 5.381-1.456.714-3.282 1.075-5.434 1.075z"/>' },
+    { name: 'YouTube', url: 'https://www.youtube.com/koltregaskes', icon: '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>' },
+    { name: 'GitHub', url: 'https://github.com/koltregaskes/', icon: '<path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>' },
+    { name: 'Mastodon', url: 'https://mastodon.social/@koltregaskes', icon: '<path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.668 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>' },
+    { name: 'Instagram', url: 'https://www.instagram.com/koltregaskes/', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2"/>' },
+    { name: 'TikTok', url: 'https://www.tiktok.com/@koltregaskes', icon: '<path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>' }
+  ];
+
+  const html = `<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  ${getSecurityHeaders()}
+  <title>About - Kol's Korner</title>
+  <meta name="description" content="About Kol Tregaskes - AI explorer, tech enthusiast, and builder based in the UK" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  ${getHeaderHTML('../')}
+
+  <main class="content-main">
+    <!-- Hero Section -->
+    <div class="about-hero">
+      <div class="about-avatar">
+        <div class="about-avatar-placeholder">K</div>
+      </div>
+      <h1 class="page-title">Kol Tregaskes</h1>
+      <p class="about-intro">I'm a <strong>technology enthusiast</strong> and <strong>AI explorer</strong> based in the UK. I write about AI agents, creative tools, and the intersection of technology and daily life. This is my corner of the internet for sharing thoughts, experiments, and discoveries.</p>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="about-sections">
+      <section class="about-section">
+        <h2><span class="hash">#</span> What I'm Working On</h2>
+        <ul>
+          <li>Building AI agent workflows with Claude Code, Gemini, and other tools</li>
+          <li>Experimenting with multi-agent orchestration</li>
+          <li>Creating automated content pipelines</li>
+          <li>Exploring the future of human-AI collaboration</li>
+        </ul>
+      </section>
+
+      <section class="about-section">
+        <h2><span class="hash">#</span> Connect</h2>
+        <ul class="social-links">
+          ${socialLinks.map(link => `
+          <li>
+            <a href="${link.url}" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">${link.icon}</svg>
+              ${link.name}
+            </a>
+          </li>`).join('')}
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  ${getFooterHTML()}
+
+  <script>
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>`;
+
+  await fs.writeFile("site/about/index.html", html, "utf8");
 }
 
 async function writeSubscribePage() {
@@ -1004,54 +1204,58 @@ async function writeSubscribePage() {
   ${getHeaderHTML('../')}
 
   <main class="content-main">
-    <div class="subscribe-content">
-      <h1 class="page-title">Newsletter</h1>
-      <p class="subscribe-text">Get notified when new posts are published. Articles on tech, AI, and development delivered to your inbox.</p>
+    <!-- Hero Section -->
+    <div class="subscribe-hero">
+      <h1 class="page-title">Stay in the Loop</h1>
+      <p class="subscribe-hero-text">Get the latest on AI agents, creative tools, and tech experiments delivered straight to your inbox.</p>
+    </div>
 
+    <!-- Benefits -->
+    <div class="subscribe-benefits">
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">📬</span>
+        <span>Weekly insights</span>
+      </div>
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">🚫</span>
+        <span>No spam, ever</span>
+      </div>
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">🔓</span>
+        <span>Unsubscribe anytime</span>
+      </div>
+    </div>
+
+    <!-- Subscribe Form Card -->
+    <div class="subscribe-form-card">
+      <h2>Subscribe to the Newsletter</h2>
       <form
         action="https://buttondown.email/api/emails/embed-subscribe/koltregaskes"
         method="post"
         target="popupwindow"
         onsubmit="window.open('https://buttondown.email/koltregaskes', 'popupwindow')"
-        class="newsletter-form"
       >
-        <div class="form-row">
-          <input type="email" name="email" id="bd-email" placeholder="your@email.com" required />
-          <button type="submit">Subscribe</button>
-        </div>
+        <input type="email" name="email" id="bd-email" placeholder="your@email.com" required />
+        <button type="submit">Subscribe</button>
       </form>
+    </div>
 
-      <p class="subscribe-note">No spam, unsubscribe at any time.</p>
-      <p class="subscribe-note" style="margin-top: 16px;">
-        <a href="/notion-site-test/feed.xml" style="color: var(--color-primary);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
-            <path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36m0-12.64a14.18 14.18 0 0 1 14.18 14.18h-3.64a10.55 10.55 0 0 0-10.54-10.55V3m0 5.09a9.09 9.09 0 0 1 9.09 9.09H11.64a5.45 5.45 0 0 0-5.46-5.45V8.09z"/>
-          </svg>
-          RSS Feed
-        </a>
-      </p>
+    <!-- RSS Alternative -->
+    <div class="subscribe-rss">
+      <h3>Prefer RSS?</h3>
+      <p>Subscribe via your favourite feed reader instead.</p>
+      <a href="../feed.xml" class="rss-link">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36m0-12.64a14.18 14.18 0 0 1 14.18 14.18h-3.64a10.55 10.55 0 0 0-10.54-10.55V3m0 5.09a9.09 9.09 0 0 1 9.09 9.09H11.64a5.45 5.45 0 0 0-5.46-5.45V8.09z"/>
+        </svg>
+        RSS Feed
+      </a>
     </div>
   </main>
 
   ${getFooterHTML()}
 
   <script>
-    document.getElementById('subscribeForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('emailInput').value;
-      const message = document.getElementById('subscribeMessage');
-      const button = document.querySelector('.subscribe-button');
-
-      button.disabled = true;
-      button.textContent = 'Subscribing...';
-
-      setTimeout(() => {
-        message.textContent = '✓ Thanks! Newsletter integration coming soon.';
-        message.style.color = 'var(--color-primary)';
-        button.textContent = 'Subscribed!';
-      }, 1000);
-    });
-
     const themeToggle = document.querySelector('.theme-toggle');
     const html = document.documentElement;
     themeToggle.addEventListener('click', () => {
@@ -1119,15 +1323,30 @@ async function writeRssFeed(items) {
   // Write article pages
   for (const item of items) {
     if (item.kind === 'article') {
-      const result = await writeArticlePage({
-        title: item.title,
-        slug: item.slug,
-        contentHtml: item.contentHtml,
-        tags: item.tags,
-        date: item.date,
-        headings: item.headings,
-        readingTime: item.readingTime
-      });
+      // Check if this is a digest post (slug starts with 'daily-digest-')
+      const isDigest = item.slug.startsWith('daily-digest-');
+
+      let result;
+      if (isDigest) {
+        result = await writeDigestPage({
+          title: item.title,
+          slug: item.slug,
+          contentHtml: item.contentHtml,
+          tags: item.tags,
+          date: item.date,
+          readingTime: item.readingTime
+        });
+      } else {
+        result = await writeArticlePage({
+          title: item.title,
+          slug: item.slug,
+          contentHtml: item.contentHtml,
+          tags: item.tags,
+          date: item.date,
+          headings: item.headings,
+          readingTime: item.readingTime
+        });
+      }
       item.localPath = result.localPath;
     }
   }

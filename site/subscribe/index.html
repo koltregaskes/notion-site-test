@@ -44,32 +44,52 @@
   </header>
 
   <main class="content-main">
-    <div class="subscribe-content">
-      <h1 class="page-title">Newsletter</h1>
-      <p class="subscribe-text">Get notified when new posts are published. Articles on tech, AI, and development delivered to your inbox.</p>
+    <!-- Hero Section -->
+    <div class="subscribe-hero">
+      <h1 class="page-title">Stay in the Loop</h1>
+      <p class="subscribe-hero-text">Get the latest on AI agents, creative tools, and tech experiments delivered straight to your inbox.</p>
+    </div>
 
+    <!-- Benefits -->
+    <div class="subscribe-benefits">
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">📬</span>
+        <span>Weekly insights</span>
+      </div>
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">🚫</span>
+        <span>No spam, ever</span>
+      </div>
+      <div class="subscribe-benefit">
+        <span class="subscribe-benefit-icon">🔓</span>
+        <span>Unsubscribe anytime</span>
+      </div>
+    </div>
+
+    <!-- Subscribe Form Card -->
+    <div class="subscribe-form-card">
+      <h2>Subscribe to the Newsletter</h2>
       <form
         action="https://buttondown.email/api/emails/embed-subscribe/koltregaskes"
         method="post"
         target="popupwindow"
         onsubmit="window.open('https://buttondown.email/koltregaskes', 'popupwindow')"
-        class="newsletter-form"
       >
-        <div class="form-row">
-          <input type="email" name="email" id="bd-email" placeholder="your@email.com" required />
-          <button type="submit">Subscribe</button>
-        </div>
+        <input type="email" name="email" id="bd-email" placeholder="your@email.com" required />
+        <button type="submit">Subscribe</button>
       </form>
+    </div>
 
-      <p class="subscribe-note">No spam, unsubscribe at any time.</p>
-      <p class="subscribe-note" style="margin-top: 16px;">
-        <a href="/notion-site-test/feed.xml" style="color: var(--color-primary);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px;">
-            <path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36m0-12.64a14.18 14.18 0 0 1 14.18 14.18h-3.64a10.55 10.55 0 0 0-10.54-10.55V3m0 5.09a9.09 9.09 0 0 1 9.09 9.09H11.64a5.45 5.45 0 0 0-5.46-5.45V8.09z"/>
-          </svg>
-          RSS Feed
-        </a>
-      </p>
+    <!-- RSS Alternative -->
+    <div class="subscribe-rss">
+      <h3>Prefer RSS?</h3>
+      <p>Subscribe via your favourite feed reader instead.</p>
+      <a href="../feed.xml" class="rss-link">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6.18 15.64a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36m0-12.64a14.18 14.18 0 0 1 14.18 14.18h-3.64a10.55 10.55 0 0 0-10.54-10.55V3m0 5.09a9.09 9.09 0 0 1 9.09 9.09H11.64a5.45 5.45 0 0 0-5.46-5.45V8.09z"/>
+        </svg>
+        RSS Feed
+      </a>
     </div>
   </main>
 
@@ -121,22 +141,6 @@
   </footer>
 
   <script>
-    document.getElementById('subscribeForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('emailInput').value;
-      const message = document.getElementById('subscribeMessage');
-      const button = document.querySelector('.subscribe-button');
-
-      button.disabled = true;
-      button.textContent = 'Subscribing...';
-
-      setTimeout(() => {
-        message.textContent = '✓ Thanks! Newsletter integration coming soon.';
-        message.style.color = 'var(--color-primary)';
-        button.textContent = 'Subscribed!';
-      }, 1000);
-    });
-
     const themeToggle = document.querySelector('.theme-toggle');
     const html = document.documentElement;
     themeToggle.addEventListener('click', () => {
