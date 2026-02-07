@@ -44,6 +44,8 @@ jobs:
           fi
 
       - name: Generate digest
+        env:
+          NEWS_SOURCE_PATH: ./news
         run: |
           ARGS="--date $TARGET_DATE --allow-empty"
 
